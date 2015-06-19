@@ -817,7 +817,7 @@ private[spark] object SparkSubmitUtils {
     localIvy.setName("local-ivy-cache")
     cr.add(localIvy)
 
-    //SPARK-8475 - add supplied --repositories to the head of ChainResolver for preferential lookup
+    // SPARK-8475 - add supplied --repositories to the head of ChainResolver for preferential lookup
     val repositoryList = remoteRepos.getOrElse("")
     // add any other remote repositories other than maven central
     if (repositoryList.trim.nonEmpty) {
