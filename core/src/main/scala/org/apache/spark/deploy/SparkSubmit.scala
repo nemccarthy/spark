@@ -817,6 +817,21 @@ private[spark] object SparkSubmitUtils {
     localIvy.setName("local-ivy-cache")
     cr.add(localIvy)
 
+    //SPARK-8475 - add supplied --repositories to the head of ChainResolver for preferential lookup
+    val repositoryList = remoteRepos.getOrElse("")
+    // add any other remote repositories other than maven central
+    if (repositoryList.trim.nonEmpty) {
+      repositoryList.split(",").zipWithIndex.foreach { case (repo, i) =>
+        val brr: IBiblioResolver = new IBiblioResolver
+        brr.setM2compatible(true)
+        brr.setUsepoms(true)
+        brr.setRoot(repo)
+        brr.setName(s"repo-${i + 1}")
+        cr.add(brr)
+        printStream.println(s"$repo added as a remote repository with the name: ${brr.getName}")
+      }
+    }
+
     // the biblio resolver resolves POM declared dependencies
     val br: IBiblioResolver = new IBiblioResolver
     br.setM2compatible(true)
@@ -831,19 +846,6 @@ private[spark] object SparkSubmitUtils {
     sp.setName("spark-packages")
     cr.add(sp)
 
-    val repositoryList = remoteRepos.getOrElse("")
-    // add any other remote repositories other than maven central
-    if (repositoryList.trim.nonEmpty) {
-      repositoryList.split(",").zipWithIndex.foreach { case (repo, i) =>
-        val brr: IBiblioResolver = new IBiblioResolver
-        brr.setM2compatible(true)
-        brr.setUsepoms(true)
-        brr.setRoot(repo)
-        brr.setName(s"repo-${i + 1}")
-        cr.add(brr)
-        printStream.println(s"$repo added as a remote repository with the name: ${brr.getName}")
-      }
-    }
     cr
   }
 
