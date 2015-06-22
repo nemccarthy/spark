@@ -833,18 +833,20 @@ private[spark] object SparkSubmitUtils {
     }
 
     // the biblio resolver resolves POM declared dependencies
-    val br: IBiblioResolver = new IBiblioResolver
-    br.setM2compatible(true)
-    br.setUsepoms(true)
-    br.setName("central")
-    cr.add(br)
+//    val br: IBiblioResolver = new IBiblioResolver
+//    br.setM2compatible(true)
+//    br.setUsepoms(true)
+//    br.setName("central")
+//    cr.add(br)
+//
+//    val sp: IBiblioResolver = new IBiblioResolver
+//    sp.setM2compatible(true)
+//    sp.setUsepoms(true)
+//    sp.setRoot("http://dl.bintray.com/spark-packages/maven")
+//    sp.setName("spark-packages")
+//    cr.add(sp)
 
-    val sp: IBiblioResolver = new IBiblioResolver
-    sp.setM2compatible(true)
-    sp.setUsepoms(true)
-    sp.setRoot("http://dl.bintray.com/spark-packages/maven")
-    sp.setName("spark-packages")
-    cr.add(sp)
+    cr.dumpSettings()
 
     cr
   }
