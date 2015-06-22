@@ -27,7 +27,7 @@ import scala.collection.mutable.{ArrayBuffer, HashMap, Map}
 import org.apache.hadoop.fs.Path
 import org.apache.hadoop.security.UserGroupInformation
 import org.apache.ivy.Ivy
-import org.apache.ivy.core.LogOptions
+import org.apache.ivy.core.{IvyContext, LogOptions}
 import org.apache.ivy.core.module.descriptor._
 import org.apache.ivy.core.module.id.{ArtifactId, ModuleId, ModuleRevisionId}
 import org.apache.ivy.core.report.ResolveReport
@@ -960,6 +960,7 @@ private[spark] object SparkSubmitUtils {
         ivySettings.setDefaultResolver(repoResolver.getName)
 
         val ivy = Ivy.newInstance(ivySettings)
+        IvyContext.getContext.setIvy(ivy)
         // Set resolve options to download transitive dependencies as well
         val resolveOptions = new ResolveOptions
         resolveOptions.setTransitive(true)
